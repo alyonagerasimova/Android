@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Распознавание латинских букв</string>
+    <string name="invalid_number_hidden">Число нейронов в скрытом слое должно быть от 26 до 500</string>
+    <string name="invalid_number_cycle">Число эпох обучения должно быть от 1 до 1000</string>
+    <string name="invalid_number_cycle_and_error">Введите либо число эпох обучения, либо погрешность</string>
+    <string name="invalid_learning_rate">Коэффициент обучения лежит в диапазоне от 0 до 1</string>
+    <string name="invalid_type_algorithm">Выберите тип алгоритма обучения</string>
+    <string name="invalid_error">Погрешность должна быть меньше 10</string>
+    <string name="invalid_image">Загрузите изображение</string>
+    <string name="login_failed">Неправильно введены данные</string>
+    <string name="prompt_learning">Коэффициент обучения</string>
+    <string name="switchLanguage" />
+</resources>
