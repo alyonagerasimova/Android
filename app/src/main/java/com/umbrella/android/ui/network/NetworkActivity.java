@@ -91,6 +91,7 @@ public class NetworkActivity extends AppCompatActivity {
     public static ImageView getImageForView() {
         return imageForView;
     }
+
     private SQLiteDatabase mDb;
     private static ImageView imageForView;
     private static ImageView imageForRecognize;
@@ -98,17 +99,11 @@ public class NetworkActivity extends AppCompatActivity {
     private final int pick_image = 1;
 
 
-
     ListView userList;
     DatabaseHelper databaseHelper;
     SQLiteDatabase db;
     Cursor userCursor;
     SimpleCursorAdapter userAdapter;
-
-
-
-
-
 
 
     private void init() throws SQLException, ClassNotFoundException, IOException {
@@ -203,9 +198,9 @@ public class NetworkActivity extends AppCompatActivity {
                 } else {
                     NetworkDataSource.getNetwork().setNumberHiddenNeurons(Integer.parseInt(numberHidden));
                     NetworkDataSource.getNetwork().setLearningRate(Double.parseDouble(learningRate));
-                    if(numberCycle != null && !numberCycle.equals(""))
-                    NetworkDataSource.getNetwork().setNumberCycles(Integer.parseInt(numberCycle));
-                    if(error != null && !error.equals("")){
+                    if (numberCycle != null && !numberCycle.equals(""))
+                        NetworkDataSource.getNetwork().setNumberCycles(Integer.parseInt(numberCycle));
+                    if (error != null && !error.equals("")) {
                         NetworkDataSource.getNetwork().setError(Double.parseDouble(error));
                     }
                     databaseHelper.saveNewNetwork(NetworkDataSource.getNetwork());
@@ -382,6 +377,7 @@ public class NetworkActivity extends AppCompatActivity {
             }
         });
     }
+
     // по нажатию на кнопку запускаем UserActivity для добавления данных
     public void add(View view) {
         Intent intent = new Intent(this, DeleteActivity.class);
@@ -392,8 +388,12 @@ public class NetworkActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         // Закрываем подключение и курсор
-        db.close();
-        userCursor.close();
+        if (db != null) {
+            db.close();
+        }
+        if (userCursor != null) {
+            userCursor.close();
+        }
     }
 
     private void readInputValuesForNetwork() {
