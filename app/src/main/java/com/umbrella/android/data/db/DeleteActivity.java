@@ -20,18 +20,18 @@ import com.umbrella.android.ui.network.MainActivity;
 
 public class DeleteActivity extends AppCompatActivity {
 
-    EditText nameBox;
-    EditText yearBox;
-    Button delButton;
-    Button saveButton;
-    ListView userList;
-    DatabaseHelper databaseHelper;
-    DatabaseHelper sqlHelper;
-    SQLiteDatabase db;
-    Cursor userCursor;
-    long userId = 0;
-    TextView header;
-    SimpleCursorAdapter userAdapter;
+    private EditText nameBox;
+    private EditText yearBox;
+    private Button delButton;
+    private Button saveButton;
+    private ListView userList;
+    private DatabaseHelper databaseHelper;
+    private DatabaseHelper sqlHelper;
+    private SQLiteDatabase db;
+    private Cursor userCursor;
+    private long userId = 0;
+    private TextView header;
+    private SimpleCursorAdapter userAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

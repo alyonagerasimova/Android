@@ -55,13 +55,18 @@ public class NetworkDataSource {
     private static final String IRPROP = "IRProp";
     private static final String RPROP = "RProp";
     private static final String BACKPROP = "BackProp";
+
+    public static void setNetwork(Network network) {
+        NetworkDataSource.network = network;
+    }
+
     private static Network network;
 
     public static Network getNetwork() {
         return network;
     }
 
-    public Result<LoggedInNetwork> network(@Nullable String numberHidden, String numberCycle, @Nullable String learningRate, String error) {
+    public static Result<LoggedInNetwork> network(@Nullable String numberHidden, String numberCycle, @Nullable String learningRate, String error) {
         try {
             NetworkDataSource.numberHiddenNeurons = Integer.parseInt(numberHidden);
             NetworkDataSource.numberCycleValue = Integer.parseInt(numberCycle);
@@ -74,7 +79,6 @@ public class NetworkDataSource {
             LoggedInNetwork loggedInNetwork = new LoggedInNetwork(NetworkDataSource.numberHiddenNeurons, NetworkDataSource.numberCycleValue,
                     NetworkDataSource.numberLearningRate, NetworkDataSource.errorValue);
             network = new Network(numberHiddenNeurons);
-            // network.setInputValues();
             if (numberCycleValue != null) {
                 network.setNumberCycles(NetworkDataSource.numberCycleValue);
             } else if (errorValue != null) {
@@ -111,6 +115,7 @@ public class NetworkDataSource {
                 iRProp.setBias(network.getBias());
                 iRProp.setAnswers(network.getAnswers());
                 iRProp.setWeightsPrev(network.getWeights());
+                network.setHiddenValues(iRProp.getHiddenValues());
                 iRProp.train();
                 iRProp.answer();
             } else if (NetworkActivity.getFlagAlgorithm().equals(RPROP)) {
@@ -130,6 +135,7 @@ public class NetworkDataSource {
                 rProp.setBias(network.getBias());
                 rProp.setAnswers(network.getAnswers());
                 rProp.setWeightsPrev(network.getWeights());
+                network.setHiddenValues(rProp.getHiddenValues());
                 rProp.train();
                 rProp.answer();
             } else if (NetworkActivity.getFlagAlgorithm().equals(BACKPROP)) {
@@ -156,88 +162,10 @@ public class NetworkDataSource {
                 network.setNumberCycles(backProp.getNumberCycles());
                 network.setLearningRate(backProp.getLearningRateFactor());
                 network.setWeights(backProp.getWeights());
+                network.setHiddenValues(backProp.getHiddenValues());
                 network.setOutputValues(backProp.getOutputValues());
                 network.setError(backProp.getError());
                 network.setBias(backProp.getBias());
-            }
-        }
-    }
-
-    public static void restudy(@Nullable String numberHidden, String numberCycle, @Nullable String learningRate, String error) throws IOException, URISyntaxException {
-        network.setLearningRate(Double.parseDouble(learningRate));
-        network.setError(Double.parseDouble(error));
-        network.setNumberCycles(Integer.parseInt(numberCycle));
-        network.setNumberHiddenNeurons(Integer.parseInt(numberHidden));
-        network.setInputValues(PictureService.getPixelColor(NetworkActivity.getImageForRecognize()));
-        if (numberCycleValue != null) {
-            network.setNumberCycles(NetworkDataSource.numberCycleValue);
-        } else if (errorValue != null) {
-            network.setError(NetworkDataSource.errorValue);
-        }
-        network.setLearningRate(NetworkDataSource.numberLearningRate);
-
-//            }
-        if (NetworkActivity.getFlagAlgorithm() == null) {
-            Validation.loginFormState.setValue(new NetworkFormState(null, R.string.invalid_type_algorithm, null, null));
-        } else {
-            if (NetworkActivity.getFlagAlgorithm().equals(IRPROP)) {
-                iRPropImpl iRProp = new iRPropImpl(numberHiddenNeurons, numberLearningRate);
-                if (numberCycleValue == null) {
-                    iRProp.setNumberCycles(0);
-                } else {
-                    iRProp.setNumberCycles(numberCycleValue);
-                }
-                if (errorValue == null) {
-                    iRProp.setError(0.0);
-                } else {
-                    iRProp.setError(errorValue);
-                }
-                iRProp.setPatterns(NetworkActivity.getPatterns());
-                iRProp.setInputValues(network.getInputValues());
-                iRProp.setPixelsValues(network.getInputValues());
-                iRProp.setBias(network.getBias());
-                iRProp.setAnswers(network.getAnswers());
-                iRProp.setWeightsPrev(network.getWeights());
-                iRProp.train();
-                iRProp.answer();
-            } else if (NetworkActivity.getFlagAlgorithm().equals(RPROP)) {
-                RPropImpl rProp = new RPropImpl(numberHiddenNeurons, numberLearningRate);
-                if (numberCycleValue == null) {
-                    rProp.setNumberCycles(0);
-                } else {
-                    rProp.setNumberCycles(numberCycleValue);
-                }
-                if (errorValue == null) {
-                    rProp.setError(0.0);
-                }
-                rProp.setPatterns(NetworkActivity.getPatterns());
-                rProp.setInputValues(network.getInputValues());
-                rProp.setPixelsValues(network.getInputValues());
-                rProp.setBias(network.getBias());
-                rProp.setAnswers(network.getAnswers());
-                rProp.setWeightsPrev(network.getWeights());
-                rProp.train();
-                rProp.answer();
-            } else if (NetworkActivity.getFlagAlgorithm().equals(BACKPROP)) {
-                BackPropImpl backProp = new BackPropImpl(numberHiddenNeurons, numberLearningRate);
-                if (numberCycleValue == null) {
-                    backProp.setNumberCycles(0);
-                } else {
-                    backProp.setNumberCycles(numberCycleValue);
-                }
-                if (errorValue == null) {
-                    backProp.setError(0.0);
-                } else {
-                    backProp.setError(errorValue);
-                }
-                backProp.setPatterns(NetworkActivity.getPatterns());
-                backProp.setInputValues(network.getInputValues());
-                backProp.setPixelsValues(network.getInputValues());
-                backProp.setBias(network.getBias());
-                backProp.setAnswers(network.getAnswers());
-                backProp.setWeights(network.getWeights());
-                backProp.train();
-                backProp.answer();
             }
         }
     }

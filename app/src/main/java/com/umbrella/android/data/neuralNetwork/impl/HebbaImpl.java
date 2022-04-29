@@ -98,7 +98,7 @@ public class HebbaImpl implements learningAlgorithm {
             }
         }
         DecimalFormat df = new DecimalFormat("#.###");
-       // writePercent(str, chancesPerNuml, df, chance);
+        // writePercent(str, chancesPerNuml, df, chance);
     }
 
     @Override
@@ -166,7 +166,7 @@ public class HebbaImpl implements learningAlgorithm {
                 for (int n = 0; n < hiddenValues.length; n++) {
                     for (int m = 0; m < inputValues.length; m++) {
                         if (n == answers[p]) {
-                        //    deltaWeight[0][m][n] = learningRateFactor * (inputValues[m] * );
+                            //    deltaWeight[0][m][n] = learningRateFactor * (inputValues[m] * );
                         }else deltaWeight[0][m][n] =  learningRateFactor * 0;
                         weights[0][m][n] = weightsPrev[0][m][n] * (1 - 0.01) + deltaWeight[0][m][n];
 

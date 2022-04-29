@@ -15,13 +15,13 @@ import com.umbrella.android.data.db.DatabaseHelper;
 import com.umbrella.android.R;
 public class MainActivity extends AppCompatActivity {
 
-    ListView userList;
-    TextView header;
-    DatabaseHelper databaseHelper;
-    SQLiteDatabase db;
-    Cursor userCursor;
-    SimpleCursorAdapter userAdapter;
-    Button upload;
+    private ListView userList;
+    private TextView header;
+    private DatabaseHelper databaseHelper;
+    private SQLiteDatabase db;
+    private Cursor userCursor;
+    private SimpleCursorAdapter userAdapter;
+    private Button upload;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -71,14 +71,13 @@ public class Serialization {
         }
     }
 
-    public void readImageForTesting() {
+    public Drawable readImageForTesting() {
         try (InputStream inputStream = context.getAssets().open("Arabic_H.jpeg")) {
-            Drawable drawable = Drawable.createFromStream(inputStream, null);
-            NetworkActivity.getImageForRecognize().setImageDrawable(drawable);
-            NetworkActivity.getImageForRecognize().setScaleType(ImageView.ScaleType.FIT_XY);
+            return Drawable.createFromStream(inputStream, null);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     public void readImageForView() {
