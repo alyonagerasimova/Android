@@ -3,6 +3,7 @@ package com.umbrella.android.ui.network;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,8 +14,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
@@ -32,6 +35,7 @@ import android.widget.RadioGroup;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.umbrella.android.R;
 import com.umbrella.android.data.Const;
 import com.umbrella.android.data.NetworkDataSource;
@@ -41,7 +45,7 @@ import com.umbrella.android.data.db.UploadActivity;
 import com.umbrella.android.data.neuralNetwork.network.Network;
 import com.umbrella.android.data.neuralNetwork.pictureService.Serialization;
 import com.umbrella.android.databinding.ActivityNetworkBinding;
-import com.umbrella.android.ui.network.map.MapsActivity;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,7 +65,7 @@ public class NetworkActivity extends AppCompatActivity {
     private EditText errorEditText;
     private Button imageButton;
     private Button recognizeButton;
-    private ImageView locationIcon;
+    private Button trainButton;
     private String numberHidden;
     private String numberCycle;
     private String learningRate;
@@ -69,7 +73,19 @@ public class NetworkActivity extends AppCompatActivity {
     private static final String IRPROP = "IRProp";
     private static final String RPROP = "RProp";
     private static final String BACKPROP = "BackProp";
+    private Serialization serialization = null;
+
+    public static void setFlagAlgorithm(String flagAlgorithm) {
+        NetworkActivity.flagAlgorithm = flagAlgorithm;
+    }
+
     private static String flagAlgorithm;
+
+    public static int getFlagTrain() {
+        return flagTrain;
+    }
+
+    private static int flagTrain = 0;
 
     public static String getFlagAlgorithm() {
         return flagAlgorithm;
@@ -112,25 +128,25 @@ public class NetworkActivity extends AppCompatActivity {
         radioGroup = binding.radioGroup;
         imageButton = binding.imageButtonUpload;
         imageForRecognize = binding.imageButton;
-        locationIcon = binding.locationIcon;
+        trainButton = binding.buttonTrain;
         databaseHelper = new DatabaseHelper(getApplicationContext());
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Serialization serialization = new Serialization(this);
+        serialization = new Serialization(this);
         binding = ActivityNetworkBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         validation = new ViewModelProvider(this, new NetworkViewModelFactory())
                 .get(Validation.class);
-
         try {
             init();
         } catch (SQLException | ClassNotFoundException | IOException throwables) {
             throwables.printStackTrace();
         }
+
         Validation.getLoginFormState().observe(this, new Observer<NetworkFormState>() {
             @Override
             public void onChanged(@Nullable NetworkFormState networkFormState) {
@@ -152,6 +168,13 @@ public class NetworkActivity extends AppCompatActivity {
                 }
             }
         });
+        trainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                trainNetwork();
+            }
+        });
+
 
         TextWatcher afterTextChangedListener = new TextWatcher() {
             @Override
@@ -186,6 +209,7 @@ public class NetworkActivity extends AppCompatActivity {
             }
         });
 
+
         binding.buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -200,6 +224,7 @@ public class NetworkActivity extends AppCompatActivity {
                         NetworkDataSource.getNetwork().setError(Double.parseDouble(error));
                     }
                     databaseHelper.saveNewNetwork(NetworkDataSource.getNetwork());
+
                     Toast.makeText(NetworkActivity.this, "Нейронная сеть сохранена", Toast.LENGTH_SHORT).show();
                     System.out.println("Все ок!");
                 }
@@ -210,6 +235,17 @@ public class NetworkActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), DeleteActivity.class);
                 startActivity(intent);
+                if (NetworkDataSource.getNetwork() != null) {
+                    Toast.makeText(NetworkActivity.this, "Нейронная сеть загружена", Toast.LENGTH_SHORT).show();
+                    numberHiddenEditText.setText(String.valueOf(NetworkDataSource.getNetwork().getNumberHiddenNeurons()));
+                    learningRateEditText.setText(String.valueOf(NetworkDataSource.getNetwork().getLearningRateFactor()));
+                    if (NetworkDataSource.getNetwork().getNumberCycles() != 0) {
+                        numberCycleEditText.setText(String.valueOf(NetworkDataSource.getNetwork().getNumberCycles()));
+                    }
+                    if (NetworkDataSource.getNetwork().getError() != 0.0) {
+                        errorEditText.setText(String.valueOf(NetworkDataSource.getNetwork().getError()));
+                    }
+                }
             }
         });
         binding.buttonCreateNetwork.setOnClickListener(new View.OnClickListener() {
@@ -223,50 +259,11 @@ public class NetworkActivity extends AppCompatActivity {
                         (!numberHidden.equals("") || !numberCycle.equals("") || !learningRate.equals(""))) {
                     NetworkDataSource networkDataSource = new NetworkDataSource();
                     networkDataSource.network(numberHidden, numberCycle, learningRate, error);
-                    openSiteDialogCreateNetwork();
+                    Toast.makeText(NetworkActivity.this, "Нейронная сеть создана", Toast.LENGTH_SHORT).show();
                 } else {
                     openSiteDialog();
                 }
             }
-        });
-
-        binding.buttonRestudy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (NetworkDataSource.getNetwork() == null) {
-                    openSiteDialog();
-                } else {
-                    readInputValuesForNetwork();
-                    String str = "1";
-                    for (int i = 0; i < Const.NUMBER_OUTPUT_NEURONS; i++) {
-                        try {
-                            double[] temp = serialization.readValuesForTraining(Const.ARRAY_LETTERS[i]);
-                            if (temp != null) {
-                                patterns.add(i, temp);
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    for (int i = 0; i < Const.NUMBER_OUTPUT_NEURONS; i++) {
-                        try {
-                            double[] temp = serialization.readValuesForTraining(Const.ARRAY_LETTERS[i] + str);
-                            if (temp != null) {
-                                patterns.add(i, temp);
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    //serialization.readImage(imageView.getTag().toString());
-                    try {
-                        NetworkDataSource.restudy(numberHidden, numberCycle, learningRate, error);
-                    } catch (IOException | URISyntaxException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
         });
 
         numberHiddenEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -298,50 +295,17 @@ public class NetworkActivity extends AppCompatActivity {
         recognizeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //if (isImage(imageView)) {
-                if (NetworkActivity.getFlagAlgorithm() == null || imageForRecognize == null
-                        || NetworkDataSource.getNetwork() == null) {
+                if (flagTrain == 0) {
                     openSiteDialog();
-                } else {
-                    readInputValuesForNetwork();
-                    String str = "1";
-                    for (int i = 0; i < Const.NUMBER_OUTPUT_NEURONS; i++) {
-                        try {
-                            double[] temp = serialization.readValuesForTraining(Const.ARRAY_LETTERS[i]);
-                            if (temp != null) {
-                                patterns.add(i, temp);
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    for (int i = 0; i < Const.NUMBER_OUTPUT_NEURONS; i++) {
-                        try {
-                            double[] temp = serialization.readValuesForTraining(Const.ARRAY_LETTERS[i] + str);
-                            if (temp != null) {
-                                patterns.add(i, temp);
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    //   serialization.readImageForView();
-                    //serialization.readImage(imageView.getTag().toString());
-                    serialization.readImageForTesting();
-                    try {
-                        NetworkDataSource.initDataAndChooseAlgorithm();
-                    } catch (IOException | URISyntaxException e) {
-                        e.printStackTrace();
-                    }
-
-                    TextView textView = findViewById(R.id.Answer);
-                    if (Network.getAnswer() != null) {
-                        StringBuffer sb = new StringBuffer(textView.getText());
-                        textView.setText(sb.delete(textView.getText().length() - 1, textView.getText().length()));
-                        textView.setText(textView.getText() + " " + Network.getAnswer());
-                    }
                 }
-                //}
+                TextView textView = findViewById(R.id.Answer);
+                NetworkActivity.getImageForRecognize().setImageDrawable(serialization.readImageForTesting());
+                NetworkActivity.getImageForRecognize().setScaleType(ImageView.ScaleType.FIT_XY);
+                if (Network.getAnswer() != null) {
+                    StringBuffer sb = new StringBuffer(textView.getText());
+                    textView.setText(sb.delete(textView.getText().length() - 1, textView.getText().length()));
+                    textView.setText(textView.getText() + " " + Network.getAnswer());
+                }
             }
         });
 
@@ -372,11 +336,44 @@ public class NetworkActivity extends AppCompatActivity {
                 startActivityForResult(photoPickerIntent, pick_image);
             }
         });
-
-        locationIcon.setOnClickListener(view -> {
-            Intent intent = new Intent(NetworkActivity.this, MapsActivity.class);
-            startActivity(intent);
-        });
+    }
+    public void trainNetwork() {
+        if (NetworkActivity.getFlagAlgorithm() == null || imageForRecognize == null
+                || NetworkDataSource.getNetwork() == null) {
+            openSiteDialog();
+        } else {
+            readInputValuesForNetwork();
+            String str = "1";
+            for (int i = 0; i < Const.NUMBER_OUTPUT_NEURONS; i++) {
+                try {
+                    double[] temp = serialization.readValuesForTraining(Const.ARRAY_LETTERS[i]);
+                    if (temp != null) {
+                        patterns.add(i, temp);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            for (int i = 0; i < Const.NUMBER_OUTPUT_NEURONS; i++) {
+                try {
+                    double[] temp = serialization.readValuesForTraining(Const.ARRAY_LETTERS[i] + str);
+                    if (temp != null) {
+                        patterns.add(i, temp);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            //   serialization.readImageForView();
+            //serialization.readImage(imageView.getTag().toString());
+            flagTrain = 1;
+            Toast.makeText(NetworkActivity.this, "Нейронная сеть обучена", Toast.LENGTH_SHORT).show();
+            try {
+                NetworkDataSource.initDataAndChooseAlgorithm();
+            } catch (IOException | URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
     }
     // по нажатию на кнопку запускаем UserActivity для добавления данных
     public void add(View view) {
@@ -385,15 +382,24 @@ public class NetworkActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         // Закрываем подключение и курсор
-        if (db != null) {
-            db.close();
-        }
-        if (userCursor != null) {
-            userCursor.close();
-        }
+
+        db.close();
+        userCursor.close();
     }
 
     private void readInputValuesForNetwork() {
@@ -426,8 +432,6 @@ public class NetworkActivity extends AppCompatActivity {
         tv.setText("Delete");
         tv = (TextView) findViewById(R.id.buttonUpload);
         tv.setText("Upload");
-        tv = (TextView) findViewById(R.id.buttonRestudy);
-        tv.setText("Retrain");
         tv = (TextView) findViewById(R.id.textViewFiledCoeffStudy);
         tv.setText("Learning Rate");
         tv = (TextView) findViewById(R.id.textViewFiledNumberHidden);
@@ -465,8 +469,6 @@ public class NetworkActivity extends AppCompatActivity {
         tv.setText("Удалить");
         tv = (TextView) findViewById(R.id.buttonUpload);
         tv.setText("Загрузить");
-        tv = (TextView) findViewById(R.id.buttonRestudy);
-        tv.setText("Переобучить");
         tv = (TextView) findViewById(R.id.textViewFiledCoeffStudy);
         tv.setText("Коэффициент обучения");
         tv = (TextView) findViewById(R.id.textViewFiledNumberHidden);
@@ -503,6 +505,10 @@ public class NetworkActivity extends AppCompatActivity {
             webaddress = new SpannableString(
                     "Создайте нейронную сеть");
             Linkify.addLinks(webaddress, Linkify.ALL);
+        } else if (flagTrain == 0) {
+            webaddress = new SpannableString(
+                    "Обучите нейронную сеть");
+            Linkify.addLinks(webaddress, Linkify.ALL);
         }
         final AlertDialog aboutDialog = new AlertDialog.Builder(
                 NetworkActivity.this).setMessage(webaddress)
@@ -517,10 +523,6 @@ public class NetworkActivity extends AppCompatActivity {
 
         ((TextView) aboutDialog.findViewById(android.R.id.message))
                 .setMovementMethod(LinkMovementMethod.getInstance());
-    }
-
-    private void openSiteDialogCreateNetwork() {
-        Toast.makeText(NetworkActivity.this, "Нейронная сеть создана", Toast.LENGTH_SHORT).show();
     }
 
     @Override

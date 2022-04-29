@@ -1,4 +1,4 @@
-//package com.umbrella.android.data.neuralNetwork.impl;
+package com.umbrella.android.data.neuralNetwork.impl;//package com.umbrella.android.data.neuralNetwork.impl;
 //
 //import lombok.Data;
 //import org.apache.commons.math3.exception.NumberIsTooLargeException;

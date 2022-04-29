@@ -15,6 +15,10 @@ import lombok.Getter;
 
 public class BackPropImpl implements learningAlgorithm {
 
+    public double[] getHiddenValues() {
+        return hiddenValues;
+    }
+
     private double[] hiddenValues; // значение скрытого нейрона
 
     public double[] getOutputValues() {

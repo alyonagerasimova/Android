@@ -21,6 +21,11 @@ public class Network implements Serializable {
     }
 
     private double[] inputValues;
+
+    public void setHiddenValues(double[] hiddenValues) {
+        this.hiddenValues = hiddenValues;
+    }
+
     private double[] hiddenValues;
 
     public void setOutputValues(double[] outputValues) {
@@ -57,12 +62,30 @@ public class Network implements Serializable {
         return pixelsValues;
     }
 
+    public static void setNumberCycles(int numberCycles) {
+        Network.numberCycles = numberCycles;
+    }
+
     private static int numberCycles = 0;
+
+    public static void setLearningRateFactor(double learningRateFactor) {
+        Network.learningRateFactor = learningRateFactor;
+    }
+
     private static double learningRateFactor;
+
+    public static void setError(double error) {
+        Network.error = error;
+    }
+
     private static double error = 0.0;
 
     public double[] getHiddenValues() {
         return hiddenValues;
+    }
+
+    public static void setNumberHiddenNeurons(int numberHiddenNeurons) {
+        Network.numberHiddenNeurons = numberHiddenNeurons;
     }
 
     private static int numberHiddenNeurons;
@@ -140,6 +163,9 @@ public class Network implements Serializable {
         initAnswers();
     }
 
+    public Network() {
+
+    }
 //    public Network(int numberHiddenNeuronsRestudy, double learningRateFactorRestudy,
 //                   int numberCyclesRestudy, double errorRestudy) {
 //         numberHiddenNeurons = numberHiddenNeuronsRestudy;
@@ -176,8 +202,9 @@ public class Network implements Serializable {
         weights[1] = new double[hiddenValues.length][outputValues.length];
         for (int i = 0; i < weights.length; i++) {
             for (int j = 0; j < weights[i].length; j++) {
-                for (int k = 0; k < weights[i][j].length; k++)
+                for (int k = 0; k < weights[i][j].length; k++) {
                     weights[i][j][k] = Math.random() * 2 - 1;
+                }
             }
         }
     }

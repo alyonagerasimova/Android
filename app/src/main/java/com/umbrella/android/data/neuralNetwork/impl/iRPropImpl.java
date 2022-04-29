@@ -12,6 +12,10 @@ import java.util.List;
 
 public class iRPropImpl implements learningAlgorithmRProp {
 
+    public double[] getHiddenValues() {
+        return hiddenValues;
+    }
+
     private double[] hiddenValues; // значение скрытого нейрона
     private double[] outputValues; // выходы
 
