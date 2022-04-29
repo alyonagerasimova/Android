@@ -45,6 +45,7 @@ import com.umbrella.android.data.db.UploadActivity;
 import com.umbrella.android.data.neuralNetwork.network.Network;
 import com.umbrella.android.data.neuralNetwork.pictureService.Serialization;
 import com.umbrella.android.databinding.ActivityNetworkBinding;
+import com.umbrella.android.ui.network.map.MapsActivity;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -62,6 +63,7 @@ public class NetworkActivity extends AppCompatActivity {
     private EditText numberHiddenEditText;
     private EditText numberCycleEditText;
     private EditText learningRateEditText;
+    private ImageView locationIcon;
     private EditText errorEditText;
     private Button imageButton;
     private Button recognizeButton;
@@ -129,6 +131,7 @@ public class NetworkActivity extends AppCompatActivity {
         imageButton = binding.imageButtonUpload;
         imageForRecognize = binding.imageButton;
         trainButton = binding.buttonTrain;
+        locationIcon = binding.locationIcon;
         databaseHelper = new DatabaseHelper(getApplicationContext());
     }
 
@@ -336,6 +339,11 @@ public class NetworkActivity extends AppCompatActivity {
                 startActivityForResult(photoPickerIntent, pick_image);
             }
         });
+
+        locationIcon.setOnClickListener(view -> {
+            Intent intent = new Intent(NetworkActivity.this, MapsActivity.class);
+            startActivity(intent);
+        });
     }
     public void trainNetwork() {
         if (NetworkActivity.getFlagAlgorithm() == null || imageForRecognize == null
@@ -398,8 +406,10 @@ public class NetworkActivity extends AppCompatActivity {
         super.onDestroy();
         // Закрываем подключение и курсор
 
-        db.close();
-        userCursor.close();
+        if(db != null)
+            db.close();
+        if(userCursor != null)
+            userCursor.close();
     }
 
     private void readInputValuesForNetwork() {
@@ -444,6 +454,10 @@ public class NetworkActivity extends AppCompatActivity {
         tv.setText("Network answer: ");
         tv = (TextView) findViewById(R.id.button_create_network);
         tv.setText("Create network");
+        tv = (TextView) findViewById(R.id.TextViewAlgStudy);
+        tv.setText("Learning algorithm");
+        tv = (TextView) findViewById(R.id.textView);
+        tv.setText("Neural network");
     }
 
     @SuppressLint("ResourceType")
@@ -481,6 +495,10 @@ public class NetworkActivity extends AppCompatActivity {
         tv.setText("Ответ сети: ");
         tv = (TextView) findViewById(R.id.button_create_network);
         tv.setText("Создать нейронную сеть");
+        tv = (TextView) findViewById(R.id.TextViewAlgStudy);
+        tv.setText("Алгоритм обучения");
+        tv = (TextView) findViewById(R.id.textView);
+        tv.setText("Нейронная сеть");
     }
 
     private void openSiteDialog() {

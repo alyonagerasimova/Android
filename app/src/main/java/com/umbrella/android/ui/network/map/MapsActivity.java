@@ -26,8 +26,6 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.umbrella.android.BuildConfig;
 import com.umbrella.android.R;
 
-
-
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private boolean locationPermissionGranted;

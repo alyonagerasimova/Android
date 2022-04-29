@@ -13,11 +13,11 @@
         map:uiZoomControls="true"
         tools:context=".ui.network.map.MapsActivity" />
 
-<!--    <ImageButton-->
-<!--        android:id="@+id/arrow_back"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        map:srcCompat="@drawable/ic_baseline_arrow_back_24" />-->
+    <!--    <ImageButton-->
+    <!--        android:id="@+id/arrow_back"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="10dp"-->
+    <!--        map:srcCompat="@drawable/ic_baseline_arrow_back_24" />-->
 
 </RelativeLayout>
