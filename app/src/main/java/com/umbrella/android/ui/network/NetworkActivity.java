@@ -3,7 +3,6 @@ package com.umbrella.android.ui.network;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,10 +13,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
@@ -35,7 +32,6 @@ import android.widget.RadioGroup;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.umbrella.android.R;
 import com.umbrella.android.data.Const;
 import com.umbrella.android.data.NetworkDataSource;
@@ -45,7 +41,7 @@ import com.umbrella.android.data.db.UploadActivity;
 import com.umbrella.android.data.neuralNetwork.network.Network;
 import com.umbrella.android.data.neuralNetwork.pictureService.Serialization;
 import com.umbrella.android.databinding.ActivityNetworkBinding;
-
+import com.umbrella.android.ui.network.map.MapsActivity;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -65,6 +61,7 @@ public class NetworkActivity extends AppCompatActivity {
     private EditText errorEditText;
     private Button imageButton;
     private Button recognizeButton;
+    private ImageView locationIcon;
     private String numberHidden;
     private String numberCycle;
     private String learningRate;
@@ -115,9 +112,8 @@ public class NetworkActivity extends AppCompatActivity {
         radioGroup = binding.radioGroup;
         imageButton = binding.imageButtonUpload;
         imageForRecognize = binding.imageButton;
+        locationIcon = binding.locationIcon;
         databaseHelper = new DatabaseHelper(getApplicationContext());
-
-
     }
 
     @Override
@@ -376,8 +372,12 @@ public class NetworkActivity extends AppCompatActivity {
                 startActivityForResult(photoPickerIntent, pick_image);
             }
         });
-    }
 
+        locationIcon.setOnClickListener(view -> {
+            Intent intent = new Intent(NetworkActivity.this, MapsActivity.class);
+            startActivity(intent);
+        });
+    }
     // по нажатию на кнопку запускаем UserActivity для добавления данных
     public void add(View view) {
         Intent intent = new Intent(this, DeleteActivity.class);
