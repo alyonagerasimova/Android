@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,7 +25,7 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.umbrella.android.BuildConfig;
 import com.umbrella.android.R;
-import com.google.android.gms.location.FusedLocationProviderClient;
+
 
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -126,6 +127,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                     new LatLng(lastKnownLocation.getLatitude(),
                                             lastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+                        }else {
+                            map.moveCamera(CameraUpdateFactory
+                                    .newLatLngZoom(defaultLocation, DEFAULT_ZOOM));
+                            map.getUiSettings().setMyLocationButtonEnabled(false);
                         }
                     } else {
                         Log.d(TAG, "Current location is null. Using defaults.");
