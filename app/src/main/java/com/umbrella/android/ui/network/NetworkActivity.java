@@ -231,7 +231,7 @@ public class NetworkActivity extends AppCompatActivity {
                     }
                     databaseHelper.saveNewNetwork(NetworkDataSource.getNetwork());
 
-                    Toast.makeText(NetworkActivity.this, "Нейронная сеть сохранена", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NetworkActivity.this, R.string.network_saved, Toast.LENGTH_SHORT).show();
                     System.out.println("Все ок!");
                 }
             }
@@ -242,7 +242,7 @@ public class NetworkActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), DeleteActivity.class);
                 startActivity(intent);
                 if (NetworkDataSource.getNetwork() != null) {
-                    Toast.makeText(NetworkActivity.this, "Нейронная сеть загружена", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NetworkActivity.this, R.string.network_loaded, Toast.LENGTH_SHORT).show();
                     numberHiddenEditText.setText(String.valueOf(NetworkDataSource.getNetwork().getNumberHiddenNeurons()));
                     learningRateEditText.setText(String.valueOf(NetworkDataSource.getNetwork().getLearningRateFactor()));
                     if (NetworkDataSource.getNetwork().getNumberCycles() != 0) {
@@ -265,7 +265,7 @@ public class NetworkActivity extends AppCompatActivity {
                         (!numberHidden.equals("") || !numberCycle.equals("") || !learningRate.equals(""))) {
                     NetworkDataSource networkDataSource = new NetworkDataSource();
                     networkDataSource.network(numberHidden, numberCycle, learningRate, error);
-                    Toast.makeText(NetworkActivity.this, "Нейронная сеть создана", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NetworkActivity.this, R.string.network_created, Toast.LENGTH_SHORT).show();
                 } else {
                     openSiteDialog();
                 }
@@ -286,18 +286,7 @@ public class NetworkActivity extends AppCompatActivity {
                 return true;
             }
         });
-        binding.switchLenguige.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    Locale locale = new Locale("value_en");
-                    changeLocaleOnEnglish(locale);
-                } else {
-                    Locale locale = new Locale("value_ru");
-                    changeLocaleOnRussian(locale);
-                }
-            }
-        });
+
         recognizeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -378,7 +367,7 @@ public class NetworkActivity extends AppCompatActivity {
             //   serialization.readImageForView();
             //serialization.readImage(imageView.getTag().toString());
             flagTrain = 1;
-            Toast.makeText(NetworkActivity.this, "Нейронная сеть обучена", Toast.LENGTH_SHORT).show();
+            Toast.makeText(NetworkActivity.this, R.string.trained_successfull, Toast.LENGTH_SHORT).show();
             try {
                 NetworkDataSource.initDataAndChooseAlgorithm();
             } catch (IOException | URISyntaxException e) {
@@ -422,97 +411,15 @@ public class NetworkActivity extends AppCompatActivity {
         error = errorEditText.getText().toString().trim();
     }
 
-    @SuppressLint("ResourceType")
-    @SuppressWarnings("deprecation")
-    private void changeLocaleOnEnglish(Locale locale) {
-        Locale.setDefault(locale);
-        Configuration configuration = new Configuration();
-        configuration.setLocale(locale);
-        getBaseContext().getResources()
-                .updateConfiguration(configuration,
-                        getBaseContext()
-                                .getResources()
-                                .getDisplayMetrics());
-        setTitle(R.string.app_name);
-
-        TextView tv = (TextView) findViewById(R.id.recognizeButton);
-        tv.setText("Recognize a letter");
-        tv = (TextView) findViewById(R.id.imageButtonUpload);
-        tv.setText("Load image");
-        tv = (TextView) findViewById(R.id.buttonSave);
-        tv.setText("Save");
-        tv = (TextView) findViewById(R.id.buttonDelete);
-        tv.setText("Delete");
-        tv = (TextView) findViewById(R.id.buttonUpload);
-        tv.setText("Upload");
-        tv = (TextView) findViewById(R.id.textViewFiledCoeffStudy);
-        tv.setText("Learning Rate");
-        tv = (TextView) findViewById(R.id.textViewFiledNumberHidden);
-        tv.setText("Number of neurons in the hidden layer");
-        tv = (TextView) findViewById(R.id.textViewFiledError);
-        tv.setText("Error");
-        tv = (TextView) findViewById(R.id.textViewFiledNumberCycle);
-        tv.setText("Number of training cycles");
-        tv = (TextView) findViewById(R.id.Answer);
-        tv.setText("Network answer: ");
-        tv = (TextView) findViewById(R.id.button_create_network);
-        tv.setText("Create network");
-        tv = (TextView) findViewById(R.id.TextViewAlgStudy);
-        tv.setText("Learning algorithm");
-        tv = (TextView) findViewById(R.id.textView);
-        tv.setText("Neural network");
-    }
-
-    @SuppressLint("ResourceType")
-    @SuppressWarnings("deprecation")
-    private void changeLocaleOnRussian(Locale locale) {
-        Locale.setDefault(locale);
-        Configuration configuration = new Configuration();
-        configuration.setLocale(locale);
-        getBaseContext().getResources()
-                .updateConfiguration(configuration,
-                        getBaseContext()
-                                .getResources()
-                                .getDisplayMetrics());
-        setTitle(R.string.app_name);
-
-        TextView tv = (TextView) findViewById(R.id.recognizeButton);
-        tv.setText("Распознать букву");
-        tv = (TextView) findViewById(R.id.imageButtonUpload);
-        tv.setText("Загрузить изображение");
-        tv = (TextView) findViewById(R.id.buttonSave);
-        tv.setText("Сохранить");
-        tv = (TextView) findViewById(R.id.buttonDelete);
-        tv.setText("Удалить");
-        tv = (TextView) findViewById(R.id.buttonUpload);
-        tv.setText("Загрузить");
-        tv = (TextView) findViewById(R.id.textViewFiledCoeffStudy);
-        tv.setText("Коэффициент обучения");
-        tv = (TextView) findViewById(R.id.textViewFiledNumberHidden);
-        tv.setText("Количество нейронов в скрытом слое");
-        tv = (TextView) findViewById(R.id.textViewFiledError);
-        tv.setText("Погрешность обучения");
-        tv = (TextView) findViewById(R.id.textViewFiledNumberCycle);
-        tv.setText("Количество циклов обучения");
-        tv = (TextView) findViewById(R.id.Answer);
-        tv.setText("Ответ сети: ");
-        tv = (TextView) findViewById(R.id.button_create_network);
-        tv.setText("Создать нейронную сеть");
-        tv = (TextView) findViewById(R.id.TextViewAlgStudy);
-        tv.setText("Алгоритм обучения");
-        tv = (TextView) findViewById(R.id.textView);
-        tv.setText("Нейронная сеть");
-    }
-
     private void openSiteDialog() {
         SpannableString webaddress = null;
         if (NetworkActivity.getFlagAlgorithm() == null) {
             webaddress = new SpannableString(
-                    "Выберите алгоритм обучения");
+                    getString(R.string.algorithm_null));
             Linkify.addLinks(webaddress, Linkify.ALL);
         } else if (imageForRecognize == null) {
             webaddress = new SpannableString(
-                    "Загрузите изображение");
+                    getString(R.string.image_null));
             Linkify.addLinks(webaddress, Linkify.ALL);
         } else if ((numberHidden.equals("") && numberCycle.equals("") && learningRate.equals("") && error.equals("")) ||
                 (numberHidden.equals("") && numberCycle.equals("") && learningRate.equals("")) ||
@@ -520,15 +427,15 @@ public class NetworkActivity extends AppCompatActivity {
                 numberHidden.equals("") && numberCycle.equals("")) ||
                 (numberHidden.equals("") || numberCycle.equals("") || learningRate.equals(""))) {
             webaddress = new SpannableString(
-                    "Введите данные для создания нейронной сети");
+                    getString(R.string.incomplete_data));
             Linkify.addLinks(webaddress, Linkify.ALL);
         } else if (NetworkDataSource.getNetwork() == null) {
             webaddress = new SpannableString(
-                    "Создайте нейронную сеть");
+                    getString(R.string.network_null));
             Linkify.addLinks(webaddress, Linkify.ALL);
         } else if (flagTrain == 0) {
             webaddress = new SpannableString(
-                    "Обучите нейронную сеть");
+                    getString(R.string.flagTrain_zero));
             Linkify.addLinks(webaddress, Linkify.ALL);
         }
         final AlertDialog aboutDialog = new AlertDialog.Builder(

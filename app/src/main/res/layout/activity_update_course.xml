@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:hint="Enter course Name" />
+        android:hint="@string/enter_course_name" />
 
     <!--edit text to enter course duration-->
     <EditText
@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:hint="Enter Course Duration" />
+        android:hint="@string/enter_course_duration" />
 
     <!--edit text to display course tracks-->
     <EditText
@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:hint="Enter Course Tracks" />
+        android:hint="@string/enter_course_tracks" />
 
     <!--edit text for course description-->
     <EditText
@@ -37,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:hint="Enter Course Description" />
+        android:hint="@string/enter_course_description" />
 
     <!--button for updating our course-->
     <Button
@@ -45,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="Update Course"
+        android:text="@string/update_course"
         android:textAllCaps="false" />
 
     <!--button for deleting our course-->
@@ -54,7 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="Delete Course"
+        android:text="@string/delete_course"
         android:textAllCaps="false" />
 
 </LinearLayout>

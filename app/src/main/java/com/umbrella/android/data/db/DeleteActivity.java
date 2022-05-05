@@ -2,6 +2,7 @@ package com.umbrella.android.data.db;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -68,6 +69,7 @@ public class DeleteActivity extends AppCompatActivity {
             }
         });
     }
+    @SuppressLint("SetTextI18n")
     @Override
     public void onResume() {
         super.onResume();
@@ -80,7 +82,7 @@ public class DeleteActivity extends AppCompatActivity {
         // создаем адаптер, передаем в него курсор
         userAdapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item,
                 userCursor, headers, new int[]{android.R.id.text1, android.R.id.text2}, 0);
-        header.setText("Найдено элементов: " +  userCursor.getCount());
+        header.setText(" " + userCursor.getCount());
         userList.setAdapter(userAdapter);
     }
 
