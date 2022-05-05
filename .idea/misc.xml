@@ -50,9 +50,15 @@
         <entry key="..\:/Projects/MobApp/Android/app/src/main/res/layout/activuty_upload.xml" value="0.2421875" />
         <entry key="..\:/Projects/MobApp/Android/app/src/main/res/layout/course_rv_item.xml" value="0.2421875" />
         <entry key="..\:/Projects/MobApp/Android/app/src/main/res/layout/custom_info_contents.xml" value="0.2421875" />
+        <entry key="..\:/Projects/Mobile/Android/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.1795" />
+        <entry key="..\:/Projects/Mobile/Android/app/src/main/res/drawable/ic_baseline_location_on_24.xml" value="0.1795" />
+        <entry key="..\:/Projects/Mobile/Android/app/src/main/res/drawable/ic_baseline_location_searching_24.xml" value="0.1795" />
+        <entry key="..\:/Projects/Mobile/Android/app/src/main/res/drawable/ic_baseline_not_listed_location_24.xml" value="0.1795" />
         <entry key="..\:/Projects/Mobile/Android/app/src/main/res/layout-land/activity_network.xml" value="0.6" />
-        <entry key="..\:/Projects/Mobile/Android/app/src/main/res/layout/activity_maps.xml" value="0.1" />
-        <entry key="..\:/Projects/Mobile/Android/app/src/main/res/layout/activity_network.xml" value="0.2421875" />
+        <entry key="..\:/Projects/Mobile/Android/app/src/main/res/layout/activity_maps.xml" value="0.176" />
+        <entry key="..\:/Projects/Mobile/Android/app/src/main/res/layout/activity_network.xml" value="0.264" />
+        <entry key="..\:/Projects/Mobile/Android/app/src/main/res/layout/bottom_app_bar.xml" value="0.2421875" />
+        <entry key="..\:/Projects/Mobile/Android/app/src/main/res/menu/bottom_app_bar.xml" value="0.2421875" />
       </map>
     </option>
   </component>

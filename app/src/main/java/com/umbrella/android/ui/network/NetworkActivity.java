@@ -45,7 +45,8 @@ import com.umbrella.android.data.db.UploadActivity;
 import com.umbrella.android.data.neuralNetwork.network.Network;
 import com.umbrella.android.data.neuralNetwork.pictureService.Serialization;
 import com.umbrella.android.databinding.ActivityNetworkBinding;
-import com.umbrella.android.ui.network.map.MapsActivity;
+import com.umbrella.android.ui.network.map.MapActivity;
+import com.yandex.mapkit.MapKitFactory;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -138,6 +139,8 @@ public class NetworkActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String MAPKIT_API_KEY = "5ec3a1f0-9379-4338-8cdd-676426193383";
+        MapKitFactory.setApiKey(MAPKIT_API_KEY);
         serialization = new Serialization(this);
         binding = ActivityNetworkBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -341,7 +344,7 @@ public class NetworkActivity extends AppCompatActivity {
         });
 
         locationIcon.setOnClickListener(view -> {
-            Intent intent = new Intent(NetworkActivity.this, MapsActivity.class);
+            Intent intent = new Intent(NetworkActivity.this, MapActivity.class);
             startActivity(intent);
         });
     }

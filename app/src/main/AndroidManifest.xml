@@ -37,10 +37,8 @@
         <activity
             android:name=".data.db.UploadActivity"
             android:label="Загрузка нейронной сети"></activity>
-        <activity android:name=".ui.network.map.MapsActivity" />
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCedRnsFSAVRi_W8aHPVsrKrgRIQwDpgxw" />
+        <activity android:name=".ui.network.map.MapActivity" />
+
     </application>
 
 </manifest>
