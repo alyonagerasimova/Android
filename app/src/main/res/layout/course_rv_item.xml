@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="3dp"
-            android:text="Course Name"
+            android:text="@string/course_name"
             android:textColor="@color/black" />
 
         <LinearLayout
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="3dp"
-                android:text="Course Tracks"
+                android:text="@string/course_tracks"
                 android:textColor="@color/black" />
 
 
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="3dp"
-                android:text="Duration"
+                android:text="@string/duration"
                 android:textColor="@color/black" />
 
         </LinearLayout>
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="3dp"
-            android:text="Description"
+            android:text="@string/description"
             android:textColor="@color/black" />
 
     </LinearLayout>

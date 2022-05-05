@@ -265,12 +265,6 @@
             android:text="Загрузить изображение"
             android:textSize="8sp" />
 
-        <Switch
-            android:id="@+id/switchLenguige"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ru_RU/en_US" />
-
     </LinearLayout>
 
     <ImageView
