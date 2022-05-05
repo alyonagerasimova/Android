@@ -16,7 +16,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Нейронная сеть"
+        android:text="@string/neural_network"
         tools:layout_editor_absoluteX="7dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -36,7 +36,7 @@
             android:layout_width="3dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Сохранить"
+            android:text="@string/save"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="12sp" />
 
@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_weight="1"
-            android:text="Загрузить"
+            android:text="@string/download"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="12sp" />
 
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_weight="1"
-            android:text="Удалить"
+            android:text="@string/delete"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="12sp" />
 
@@ -84,7 +84,7 @@
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:paddingBottom="6dp"
-                android:text="Количество нейронов в скрытом слое" />
+                android:text="@string/num_neurons" />
 
             <EditText
                 android:id="@+id/filedNumberHidden"
@@ -106,7 +106,7 @@
                 android:id="@+id/textViewFiledCoeffStudy"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:text="Коэффициент обучения" />
+                android:text="@string/prompt_learning" />
 
             <EditText
                 android:id="@+id/filedCoeffStudy"
@@ -128,7 +128,7 @@
                 android:id="@+id/textViewFiledNumberCycle"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:text="Количество эпох обучения" />
+                android:text="@string/num_epochs" />
 
             <EditText
                 android:id="@+id/filedNumberCycle"
@@ -151,7 +151,7 @@
                 android:id="@+id/textViewFiledError"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:text="Погрешность обучения" />
+                android:text="@string/training_error" />
 
             <EditText
                 android:id="@+id/filedError"
@@ -184,7 +184,7 @@
                 android:id="@+id/TextViewAlgStudy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Алгоритм обучения"
+                android:text="@string/algorithm"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -198,21 +198,21 @@
                 android:id="@+id/radioButtonBackProp"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
-                android:text="BackProp"
+                android:text="@string/backprop"
                 android:textSize="10sp" />
 
             <RadioButton
                 android:id="@+id/radioButtonRprop"
                 android:layout_width="wrap_content"
                 android:layout_height="34dp"
-                android:text="RProp"
+                android:text="@string/rprop"
                 android:textSize="10sp" />
 
             <RadioButton
                 android:id="@+id/radioButtonIpprop"
                 android:layout_width="wrap_content"
                 android:layout_height="28dp"
-                android:text="iPProp+"
+                android:text="@string/ipprop"
                 android:textSize="10sp" />
 
         </RadioGroup>
@@ -235,20 +235,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
-            android:text="Ответ сети:" />
+            android:text="@string/response" />
 
         <Button
             android:id="@+id/button_create_network"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Создать нейронную сеть"
+            android:text="@string/create_network"
             android:textSize="8sp" />
 
         <Button
             android:id="@+id/buttonTrain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Обучить нейронную сеть"
+            android:text="@string/train_network"
             android:textSize="8sp" />
 
         <LinearLayout
@@ -262,7 +262,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:text="Загрузить изображение"
+            android:text="@string/upload_image"
             android:textSize="8sp" />
 
     </LinearLayout>
@@ -292,7 +292,7 @@
         android:id="@+id/recognizeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Распознать букву"
+        android:text="@string/recognize_letter"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
