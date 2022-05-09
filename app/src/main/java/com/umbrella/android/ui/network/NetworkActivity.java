@@ -1,5 +1,6 @@
 package com.umbrella.android.ui.network;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -7,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -27,7 +27,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -36,6 +35,11 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.umbrella.android.R;
 import com.umbrella.android.data.Const;
 import com.umbrella.android.data.NetworkDataSource;
@@ -48,14 +52,20 @@ import com.umbrella.android.databinding.ActivityNetworkBinding;
 import com.umbrella.android.ui.network.map.MapActivity;
 import com.yandex.mapkit.MapKitFactory;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class NetworkActivity extends AppCompatActivity {
 
@@ -207,33 +217,52 @@ public class NetworkActivity extends AppCompatActivity {
         numberCycleEditText.addTextChangedListener(afterTextChangedListener);
         errorEditText.addTextChangedListener(afterTextChangedListener);
 
-        binding.buttonUpload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), UploadActivity.class);
-                startActivity(intent);
-            }
+        binding.buttonUpload.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), UploadActivity.class);
+            startActivity(intent);
         });
 
+        Button btnServer = findViewById(R.id.server_check);
+        btnServer.setOnClickListener(view -> {
+            FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+            mUser.getIdToken(false)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            String idToken = task.getResult().getToken();
+                            new Thread(() -> {
+                                var str = getData(idToken);
+                                try {
+                                    var object = new JSONObject(str);
+                                    var welcomeText = object.getString("welcome");
+                                    runOnUiThread(() -> {
+                                        btnServer.setText(welcomeText);
+                                        Toast.makeText(getApplicationContext(), str, Toast.LENGTH_LONG).show();
+                                    });
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }).start();
+                        } else {
+                            task.getException().printStackTrace();
+                        }
+                    });
+        });
 
-        binding.buttonSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (NetworkDataSource.getNetwork() == null) {
-                    openSiteDialog();
-                } else {
-                    NetworkDataSource.getNetwork().setNumberHiddenNeurons(Integer.parseInt(numberHidden));
-                    NetworkDataSource.getNetwork().setLearningRate(Double.parseDouble(learningRate));
-                    if (numberCycle != null && !numberCycle.equals(""))
-                        NetworkDataSource.getNetwork().setNumberCycles(Integer.parseInt(numberCycle));
-                    if (error != null && !error.equals("")) {
-                        NetworkDataSource.getNetwork().setError(Double.parseDouble(error));
-                    }
-                    databaseHelper.saveNewNetwork(NetworkDataSource.getNetwork());
-
-                    Toast.makeText(NetworkActivity.this, R.string.network_saved, Toast.LENGTH_SHORT).show();
-                    System.out.println("Все ок!");
+        binding.buttonSave.setOnClickListener(view -> {
+            if (NetworkDataSource.getNetwork() == null) {
+                openSiteDialog();
+            } else {
+                NetworkDataSource.getNetwork().setNumberHiddenNeurons(Integer.parseInt(numberHidden));
+                NetworkDataSource.getNetwork().setLearningRate(Double.parseDouble(learningRate));
+                if (numberCycle != null && !numberCycle.equals(""))
+                    NetworkDataSource.getNetwork().setNumberCycles(Integer.parseInt(numberCycle));
+                if (error != null && !error.equals("")) {
+                    NetworkDataSource.getNetwork().setError(Double.parseDouble(error));
                 }
+                databaseHelper.saveNewNetwork(NetworkDataSource.getNetwork());
+
+                Toast.makeText(NetworkActivity.this, R.string.network_saved, Toast.LENGTH_SHORT).show();
+                System.out.println("Все ок!");
             }
         });
         binding.buttonDelete.setOnClickListener(new View.OnClickListener() {
@@ -337,6 +366,7 @@ public class NetworkActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
+
     public void trainNetwork() {
         if (NetworkActivity.getFlagAlgorithm() == null || imageForRecognize == null
                 || NetworkDataSource.getNetwork() == null) {
@@ -375,6 +405,7 @@ public class NetworkActivity extends AppCompatActivity {
             }
         }
     }
+
     // по нажатию на кнопку запускаем UserActivity для добавления данных
     public void add(View view) {
         Intent intent = new Intent(this, DeleteActivity.class);
@@ -384,13 +415,11 @@ public class NetworkActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     @Override
@@ -398,9 +427,9 @@ public class NetworkActivity extends AppCompatActivity {
         super.onDestroy();
         // Закрываем подключение и курсор
 
-        if(db != null)
+        if (db != null)
             db.close();
-        if(userCursor != null)
+        if (userCursor != null)
             userCursor.close();
     }
 
@@ -475,4 +504,37 @@ public class NetworkActivity extends AppCompatActivity {
         return Validation.networkImage(imageView);
     }
 
+    private String getData(String token) {
+        var targetURL = "http://192.168.1.89:6070/api/user/welcome";
+
+        try {
+            URL url = new URL(targetURL);
+            var connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            connection.setRequestProperty("X-UserId", FirebaseAuth.getInstance().getUid());
+            connection.setRequestProperty("X-IdToken", token);
+
+            int responseCode = connection.getResponseCode();
+            if (responseCode == 404) {
+                throw new IllegalArgumentException();
+            }
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder builder = new StringBuilder();
+            String line = "";
+
+            while ((line = reader.readLine()) != null) {
+                builder.append(line).append("\n");
+            }
+            reader.close();
+            return builder.toString();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "{}";
+    }
 }
+

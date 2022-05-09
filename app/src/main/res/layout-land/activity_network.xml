@@ -289,6 +289,17 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <Button
+        android:id="@+id/server_check"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_gravity="bottom"
+        android:text="@string/check_server"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/locationIcon"
+        android:textSize="8sp" />
+
+    <Button
         android:id="@+id/recognizeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -53,4 +53,14 @@
     <string name="network_created">Neural network created</string>
     <string name="network_loaded">Neural network loaded</string>
     <string name="network_saved">Neural network saved</string>
+    <string name="enter_email">Enter email</string>
+    <string name="enter_password">Enter password</string>
+    <string name="error_signin">Authorisation Error</string>
+    <string name="add_user">User added</string>
+    <string name="error_register">Registration error</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="check_server">Check server operation</string>
 </resources>
