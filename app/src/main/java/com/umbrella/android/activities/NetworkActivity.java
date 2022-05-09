@@ -3,7 +3,6 @@ package com.umbrella.android.activities;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,10 +10,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
@@ -29,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.umbrella.android.R;
 import com.umbrella.android.data.Const;
 import com.umbrella.android.data.NetworkDataSource;
@@ -41,6 +37,8 @@ import com.umbrella.android.databinding.ActivityNetworkBinding;
 import com.umbrella.android.ui.network.NetworkFormState;
 import com.umbrella.android.ui.network.NetworkViewModelFactory;
 import com.umbrella.android.ui.network.Validation;
+import com.umbrella.android.ui.network.map.MapActivity;
+import com.yandex.mapkit.MapKitFactory;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -52,6 +50,7 @@ import java.util.List;
 
 public class NetworkActivity extends AppCompatActivity {
 
+    private ImageView locationIcon;
     private Validation validation;
     private ActivityNetworkBinding binding;
     private EditText numberHiddenEditText;
@@ -125,12 +124,15 @@ public class NetworkActivity extends AppCompatActivity {
         imageButton = binding.imageButtonUpload;
         imageForView = binding.imageButton;
         imageForRecognize = binding.imageButton;
+        locationIcon = binding.locationIcon;
         databaseHelper = new SaveNetwork(getApplicationContext());
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String MAPKIT_API_KEY = "5ec3a1f0-9379-4338-8cdd-676426193383";
+        MapKitFactory.setApiKey(MAPKIT_API_KEY);
         serialization = new Serialization(this);
         binding = ActivityNetworkBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -228,7 +230,7 @@ public class NetworkActivity extends AppCompatActivity {
                     UploadNetworkActivity uploadNetworkActivity = new UploadNetworkActivity();
                     databaseHelper.saveNewNetwork(NetworkDataSource.getNetwork());
 
-                    Toast.makeText(NetworkActivity.this, "Нейронная сеть сохранена", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NetworkActivity.this, R.string.network_saved, Toast.LENGTH_SHORT).show();
                     System.out.println("Все ок!");
                 }
             }
@@ -239,7 +241,7 @@ public class NetworkActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), DeleteNetworkActivity.class);
                 startActivity(intent);
                 if (NetworkDataSource.getNetwork() != null) {
-                    Toast.makeText(NetworkActivity.this, "Нейронная сеть загружена", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NetworkActivity.this, R.string.network_loaded, Toast.LENGTH_SHORT).show();
                     numberHiddenEditText.setText(String.valueOf(NetworkDataSource.getNetwork().getNumberHiddenNeurons()));
                     learningRateEditText.setText(String.valueOf(NetworkDataSource.getNetwork().getLearningRateFactor()));
                     if (NetworkDataSource.getNetwork().getNumberCycles() != 0) {
@@ -263,7 +265,7 @@ public class NetworkActivity extends AppCompatActivity {
                     NetworkDataSource networkDataSource = new NetworkDataSource();
                     networkDataSource.network(numberHidden, numberCycle, learningRate, error);
 
-                    Toast.makeText(NetworkActivity.this, "Нейронная сеть создана", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NetworkActivity.this, R.string.network_created, Toast.LENGTH_SHORT).show();
                 } else {
                     openSiteDialog();
                 }
@@ -326,6 +328,11 @@ public class NetworkActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), ListImagesActivity.class);
                 startActivity(intent);
             }
+        });
+
+        locationIcon.setOnClickListener(view -> {
+            Intent intent = new Intent(NetworkActivity.this, MapActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -396,11 +403,11 @@ public class NetworkActivity extends AppCompatActivity {
         SpannableString webaddress = null;
         if (NetworkActivity.getFlagAlgorithm() == null) {
             webaddress = new SpannableString(
-                    "Выберите алгоритм обучения");
+                    getString(R.string.algorithm_null));
             Linkify.addLinks(webaddress, Linkify.ALL);
         } else if (imageForView != null) {
             webaddress = new SpannableString(
-                    "Загрузите изображение");
+                    getString(R.string.image_null));
             Linkify.addLinks(webaddress, Linkify.ALL);
         } else if ((numberHidden.equals("") && numberCycle.equals("") && learningRate.equals("") && error.equals("")) ||
                 (numberHidden.equals("") && numberCycle.equals("") && learningRate.equals("")) ||
@@ -408,11 +415,11 @@ public class NetworkActivity extends AppCompatActivity {
                 numberHidden.equals("") && numberCycle.equals("")) ||
                 (numberHidden.equals("") || numberCycle.equals("") || learningRate.equals(""))) {
             webaddress = new SpannableString(
-                    "Введите данные для создания нейронной сети");
+                    getString(R.string.incomplete_data));
             Linkify.addLinks(webaddress, Linkify.ALL);
         } else if (NetworkDataSource.getNetwork() == null) {
             webaddress = new SpannableString(
-                    "Создайте нейронную сеть");
+                    getString(R.string.network_null));
             Linkify.addLinks(webaddress, Linkify.ALL);
         }
         final AlertDialog aboutDialog = new AlertDialog.Builder(

@@ -3,13 +3,13 @@ package com.umbrella.android.data;
 import androidx.annotation.Nullable;
 
 import com.umbrella.android.R;
+import com.umbrella.android.activities.NetworkActivity;
 import com.umbrella.android.data.model.LoggedInNetwork;
 import com.umbrella.android.data.neuralNetwork.impl.BackPropImpl;
 import com.umbrella.android.data.neuralNetwork.impl.RPropImpl;
 import com.umbrella.android.data.neuralNetwork.impl.iRPropImpl;
 import com.umbrella.android.data.neuralNetwork.network.Network;
 import com.umbrella.android.data.neuralNetwork.pictureService.PictureService;
-import com.umbrella.android.activities.NetworkActivity;
 import com.umbrella.android.ui.network.NetworkFormState;
 import com.umbrella.android.ui.network.Validation;
 

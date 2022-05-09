@@ -54,7 +54,7 @@ public class ListImagesActivity extends AppCompatActivity {
                 }
                 Intent intent = new Intent(getApplicationContext(), NetworkActivity.class);
                 startActivity(intent);
-               // Toast.makeText(ListImagesActivity.this, "Selected :" + " " + image, Toast.LENGTH_LONG).show();
+                // Toast.makeText(ListImagesActivity.this, "Selected :" + " " + image, Toast.LENGTH_LONG).show();
             }
         });
     }

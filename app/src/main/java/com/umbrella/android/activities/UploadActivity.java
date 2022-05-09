@@ -12,15 +12,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.umbrella.android.R;
 import com.umbrella.android.data.NetworkDataSource;
 import com.umbrella.android.data.db.SaveNetwork;
 import com.umbrella.android.data.neuralNetwork.network.Network;
-import com.umbrella.android.activities.NetworkActivity;
-
 import java.nio.ByteBuffer;
 import java.sql.SQLException;
 
@@ -174,6 +170,7 @@ public class UploadActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onResume() {
         super.onResume();
@@ -188,7 +185,7 @@ public class UploadActivity extends AppCompatActivity {
         // создаем адаптер, передаем в него курсор
         userAdapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item,
                 userCursor, headers, new int[]{android.R.id.text1}, 0);
-        header.setText("Найдено элементов: " + userCursor.getCount());
+        header.setText(" " + userCursor.getCount());
         userList.setAdapter(userAdapter);
     }
 }

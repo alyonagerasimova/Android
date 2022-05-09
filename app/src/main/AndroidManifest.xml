@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.umbrella.android">
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-feature android:name="android.hardware.camera"
+
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
-    <uses-permission android:name="android.permission.CAMERA"></uses-permission>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
         android:roundIcon="@drawable/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/Theme.Android">
@@ -21,22 +28,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".data.db.DeleteNetworkActivity"
-            android:label="@string/app_name">
-        </activity>
-        <activity android:name=".activities.MainActivity"
-            android:label="@string/app_name">
-        </activity>
-        <activity android:name=".activities.UploadActivity"
-            android:label="@string/app_name">
-        </activity>
-        <activity android:name=".activities.ListImagesActivity"
-            android:label="@string/app_name">
-        </activity>
-        <activity android:name=".activities.UploadNetworkActivity"
-            android:theme="@style/Theme.AppCompat"
-            android:label="@string/app_name">
-        </activity>
+        <activity
+            android:name=".data.db.DeleteNetworkActivity"
+            android:label="@string/app_name_deleting"></activity>
+        <activity
+            android:name=".activities.MainActivity"
+            android:label="@string/app_name"></activity>
+        <activity
+            android:name=".activities.UploadActivity"
+            android:label="@string/app_name_loading"></activity>
+        <activity
+            android:name=".activities.ListImagesActivity"
+            android:label="@string/app_name"></activity>
+        <activity
+            android:name=".activities.UploadNetworkActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AppCompat"></activity>
+        <activity android:name=".ui.network.map.MapActivity" />
     </application>
 
 </manifest>
