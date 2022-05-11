@@ -8,8 +8,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
-
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
@@ -89,16 +87,17 @@ public class LoginRegistrationActivity extends Activity {
                                                 runOnUiThread(() -> {
                                                     Toast.makeText(
                                                             getApplicationContext(),
-                                                            welcomeText + str,
+                                                            welcomeText,
                                                             Toast.LENGTH_LONG).show();
-                                                    Intent intent = new Intent(LoginRegistrationActivity.this, NetworkActivity.class);
-                                                    startActivity(intent);
+//                                                    Intent intent = new Intent(LoginRegistrationActivity.this, NetworkActivity.class);
+//                                                    startActivity(intent);
                                                 });
                                             } catch (JSONException e) {
                                                 e.printStackTrace();
                                             }
                                         }).start();
-
+                                        Intent intent = new Intent(LoginRegistrationActivity.this, NetworkActivity.class);
+                                        startActivity(intent);
                                     } else {
                                         Objects.requireNonNull(task.getException()).printStackTrace();
                                     }
