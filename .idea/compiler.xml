@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <annotationProcessing>
-      <profile default="true" name="Default" enabled="true">
-        <processorPath useClasspath="false" useProcessorModulePath="true">
-          <entry name="$PROJECT_DIR$/app/lombok.config" />
-        </processorPath>
-      </profile>
-    </annotationProcessing>
-    <bytecodeTargetLevel target="8" />
+    <bytecodeTargetLevel target="1.8" />
   </component>
 </project>
