@@ -1,0 +1,143 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a sample server.",
+    "version": "1.0.6",
+    "title": "Swagger My server",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "alena@swagger.io"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost:6070",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "user",
+      "description": "Users data"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/user/random": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get random number",
+        "description": "Get random number [0,1]",
+        "operationId": "getRandomNum",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/definitions/Random"
+          },
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/user/welcome": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get welcome message by token",
+        "description": "",
+        "operationId": "getWelcomeMessage",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Welcome"
+            }
+          },
+          "400": {
+            "description": "Invalid username supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Set welcome message",
+        "description": "",
+        "operationId": "postWelcomeMessage",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "message",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Welcome"
+            }
+          },
+          "500": {
+            "description": "No welcome text!"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Random": {
+      "type": "number",
+      "example": 0.12312312312
+    },
+    "Welcome": {
+      "type": "object",
+      "properties": {
+        "welcome": {
+          "type": "string"
+        },
+        "updated": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "Welcome"
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}
