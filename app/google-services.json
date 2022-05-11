@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "68805089084",
+    "project_id": "mobile-app-347309",
+    "storage_bucket": "mobile-app-347309.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:68805089084:android:12896a9f5df07a08e2b039",
+        "android_client_info": {
+          "package_name": "com.umbrella.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "68805089084-3g917dhdbpag6jptrillsvhm07k32iap.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBf6iutb-oD0waRmYVcBQISnL8wOIjoevc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "68805089084-3g917dhdbpag6jptrillsvhm07k32iap.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
