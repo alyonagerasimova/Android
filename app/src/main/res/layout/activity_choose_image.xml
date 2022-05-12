@@ -10,7 +10,8 @@
         android:layout_height="261dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="135dp">
+        tools:layout_editor_absoluteY="135dp"
+        tools:ignore="MissingConstraints">
 
         <Button
             android:id="@+id/buttonArabic"
